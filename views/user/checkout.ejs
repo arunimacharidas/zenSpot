@@ -29,7 +29,7 @@
 
     <main class="main">
         <div class="container">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-6 ">
                 </div>
                 <div class="col-md-6">
@@ -68,7 +68,7 @@
                                 <%})%>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -113,6 +113,7 @@
                                 <div class="form-group">
                                     <input required="" type="text"   name="zipcode" placeholder="Postcode / ZIP *">
                                 </div>
+                                
 
                                 <div class="form-group">
                                     
@@ -121,6 +122,8 @@
                             
 
                             </div>
+                            
+                            
                             <div class="col-md-6">
                                 <div class="order_review">
                                     <div class="mb-20">
@@ -223,6 +226,45 @@
                             </div>
                         </div>
                     </form>
+                    <div class="col-md-6 ">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="toggle_info">
+                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
+                                    href="#coupon" data-bs-toggle="collapse" class="collapsed"
+                                    aria-expanded="false">Click here to enter your code</a> <a
+                                    onclick="location.reload()"
+                                    class="btn-danger btn-sm btn-danger justify-content-between d-none"
+                                    id="remove">remove Coupen</a> </span>
+                        </div>
+                        <div class="panel-collapse collapse coupon_form " id="coupon">
+    
+                            <div class="panel-body row justify-content-around">
+                                <span id="minErr" class="text-danger "></span>
+                                <% (coupens||[]).forEach(coupon=>{%>
+                                    <div class="card col-md-5 mt-5 ">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center">
+                                                <%= coupon.name %>
+                                            </h3>
+                                            <p class="card-text">All Above:<%=coupon.minAmount %>
+                                            </p>
+                                            <p class="card-text"> Discound:<%=coupon.maxAmount %>
+                                            </p>
+                                            <p class="card-text"> Validity:<%=coupon.validity.toLocaleDateString()%>
+                                            </p>
+                                            <p><strong>Code:</strong>
+                                                <%= coupon.code %>
+                                            </p>
+                                        </div>
+                                        <button class="btn  btn-sm mb-10 " id="<%= coupon._id%>"
+                                            onclick="return coupon('<%=coupon._id %>','<%= prod.totalAmount %>','<%=coupon.minAmount %>','<%=coupon.maxAmount %>','<%=coupon.validity%>','<%=coupon.perc %>' )">Apply</button>
+                                    </div>
+    
+                                    <%})%>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-5">
                         <div class="toggle_info">
                             <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Address</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Select Address</a></span>

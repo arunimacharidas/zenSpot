@@ -3,7 +3,7 @@ var router = express.Router();
 const bycrpt = require('bcrypt')
 const upload = require('../middlewares/multer')
 // const db = require('../models/connection')
-const {getAdminlogin,postAdminlogin,adminhome,adminAllusers,adminLogout, UserStatus,getAllOrders,orderStatus,getcoupon,postcoupon,allcoupon,couponstatus,orderstatuschange} = require('../controllers/adminControllers')
+const {getAdminlogin,postAdminlogin,adminhome,adminAllusers,adminLogout, UserStatus,getAllOrders,orderStatus,getcoupon,postcoupon,allcoupon,couponstatus,orderstatuschange,dashboard} = require('../controllers/adminControllers')
 const {getAddProducts,getAddcategory,getNewcategory,SetProducts, postShowproducts,geteditproduct, blockproduct,posteditProduct,editcategory,categoryupdate,blockcategory} = require('../controllers/productControllers');
 const{isadminloggedIn}= require("../middlewares/adminmiddleware");
 // const adminmodel = require('../models/admin-model');
@@ -41,6 +41,7 @@ router.post('/admin-addcoupoen',postcoupon)
 router.get('/admin-allcoupens',allcoupon)
 router.get('/admin-couponstaus',couponstatus)
 router.post('/ChangeOrderstatus',orderstatuschange)
+router.get('/admin-dashboard',isadminloggedIn,dashboard)
 
 
 

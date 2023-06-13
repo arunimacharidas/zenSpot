@@ -1,0 +1,457 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Dashboard </h2>
+            <p>Whole data about your business here</p>
+        </div>
+        <div>
+            <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                            class="text-primary material-icons md-monetization_on"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Revenue</h6>
+                        <% if(currmonthsale.totalAmount){%>
+                            <span> $<%=currmonthsale.totalAmount %></span>
+                            <%}%>
+                                <span class="text-sm">
+                                    Shipping fees are not included
+                                </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-success-light"><i
+                            class="text-success material-icons md-local_shipping"></i></span>
+                    <div class="text">
+                        <% if(orders){%>
+
+                            <h6 class="mb-1 card-title">Orders</h6> <span>
+                                <%= orders.length %>
+                            </span>
+                            <%}%>
+                                <span class="text-sm">
+                                    Excluding orders in transit
+                                </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                            class="text-warning material-icons md-qr_code"></i></span>
+                    <div class="text">
+                        <% if(prod){%>
+
+                            <h6 class="mb-1 card-title">Products</h6> <span>
+                                <%= prod.length %>
+                            </span>
+                            <%}%>
+                                <span class="text-sm">
+                                    In 3 Categories <br>
+                                    .
+                                </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-info-light"><i
+                            class="text-info material-icons md-shopping_basket"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Monthly Earning</h6> <span>$6,982</span>
+                        <span class="text-sm">
+                            Based in your local time.
+                        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-8 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Sale statistics</h5>
+                    <select id="chart-filter">
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                    <canvas id="myChart" height="120px"></canvas>
+                </article>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <article class="card-body">
+                            <h5 class="card-title">Revenue Base on Area</h5>
+                            <canvas id="myChart2" height="217"></canvas>
+                        </article>
+                    </div>
+                    <!-- <div class="card mb-4">
+                        <article class="card-body">
+                            <h5 class="card-title">Marketing Chanel</h5>
+                            <span class="text-muted font-xs">Facebook</span>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 15%">15%</div>
+                            </div>
+                            <span class="text-muted font-xs">Instagram</span>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 65%">65% </div>
+                            </div>
+                            <span class="text-muted font-xs">Google</span>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 51%"> 51% </div>
+                            </div>
+                            <span class="text-muted font-xs">Twitter</span>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 80%"> 80%</div>
+                            </div>
+                            <span class="text-muted font-xs">Other</span>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 80%"> 80%</div>
+                            </div>
+                        </article>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Sales on category</h5>
+                    <canvas id="categoryChart"></canvas>
+                </article>
+            </div>
+            <!-- <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Marketing Chanel</h5>
+                    <span class="text-muted font-xs">Facebook</span>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 15%">15%</div>
+                    </div>
+                    <span class="text-muted font-xs">Instagram</span>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 65%">65% </div>
+                    </div>
+                    <span class="text-muted font-xs">Google</span>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 51%"> 51% </div>
+                    </div>
+                    <span class="text-muted font-xs">Twitter</span>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 80%"> 80%</div>
+                    </div>
+                    <span class="text-muted font-xs">Other</span>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 80%"> 80%</div>
+                    </div>
+                </article>
+            </div>  -->
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+
+            <h4 class="card-title">Latest orders</h4>
+            <div class="row align-items-center">
+                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                    <div class="custom_select">
+
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-6">
+                    <div class="custom_select">
+
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table-responsive">
+                    <div>
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" id="startDate" />
+                        <label for="endDate">End Date:</label>
+                        <input type="date" id="endDate" />
+                        <button onclick="filterTable()">Filter</button>
+                    </div>
+
+                    <table class="table align-middle table-nowrap mb-0" id="salesTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="text-center"></th>
+                                <th class="align-middle" scope="col">Order ID</th>
+                                <th class="align-middle" scope="col">Billing Name</th>
+                                <th class="align-middle" scope="col">Date</th>
+                                <th class="align-middle" scope="col">Total</th>
+                                <th class="align-middle" scope="col">Payment Status</th>
+                                <th class="align-middle" scope="col">Payment Method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orders.forEach((order, index)=> { %>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td><b>
+                                            <%= order.name %>
+                                        </b></td>
+                                    <td>
+                                        <%= order.date.toLocaleDateString() %>
+                                    </td>
+                                    <td>
+                                        <%= order.totalAmount %>
+                                    </td>
+                                    <td><span>
+                                            <%= order.status %>
+                                        </span></td>
+                                    <td>
+                                        <%= order.payment_option %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script src="/assets1/js/vendors/chart.js"></script>
+<script>
+    var table = $('#salesTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+
+    })
+</script>
+
+
+
+
+
+<script>
+
+    if ($('#categoryChart').length) {
+        const strigData = `<%- JSON.stringify(categorySales) %>`;
+        const categorySalesData = JSON.parse(strigData);
+        console.log(categorySalesData);
+        const categories = categorySalesData.map(category => category.name)
+        console.log(categories)
+        const categoryColors = categorySalesData.map(() => {
+            const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+            return `#${randomColor.padStart(6, '0')}`
+        })
+        const categoryCount = categorySalesData.map(category => category.count)
+        var ctx = document.getElementById("categoryChart").getContext('2d')
+        var categoryChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: categories,
+                datasets: [
+                    {
+                        label: "Categories",
+                        backgroundColor: categoryColors,
+                        data: categoryCount
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                        },
+                    }
+                }
+            }
+        })
+
+
+    }
+
+
+
+
+
+    if ($('#myChart').length) {
+        const strigData = `<%- JSON.stringify(salesByMonth) %>`;
+        const strigYearly = `<%- JSON.stringify(salesByYear) %>`;
+        const salesData = JSON.parse(strigData);
+        const yearlyData = JSON.parse(strigYearly);
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Sales',
+                    tension: 0.3,
+                    fill: true,
+                    backgroundColor: 'rgba(44, 120, 220, 0.2)',
+                    borderColor: 'rgba(44, 120, 220)',
+                    data: Array.from({ length: 12 }).map((_, index) => {
+                        const monthSales = salesData.find(sale => sale._id === index + 1);
+                        return monthSales ? monthSales.totalAmount : 0;
+                    })
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                        },
+                    }
+                }
+            }
+        });
+
+        const filterSelect = document.getElementById('chart-filter');
+        filterSelect.addEventListener('change', () => {
+            const filterValue = filterSelect.value;
+            if (filterValue === 'monthly') {
+                chart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                chart.data.datasets[0].data = Array.from({ length: 12 }).map((_, index) => {
+                    const monthSales = salesData.find(sale => sale._id === index + 1);
+                    return monthSales ? monthSales.totalAmount : 0;
+                });
+                chart.update();
+            } else if (filterValue === 'yearly') {
+                ;
+                chart.data.labels = ['2021', '2022', '2023', '2024', '2025'];
+                chart.data.datasets[0].data = chart.data.labels.map((label) => {
+                    const yearSales = yearlyData.find(sale => sale._id == label);
+                    return yearSales ? yearSales.totalAmount : 0;
+                })
+                chart.update();
+            }
+        });
+    }
+
+    if ($('#myChart2').length) {
+
+        const strigData = `<%- JSON.stringify(ordersByDate) %>`;
+        const orderData = JSON.parse(strigData);
+
+        var ctx = document.getElementById("myChart2").getContext('2d')
+        var orderChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [
+                    {
+                        label: "Orders",
+                        backgroundColor: "#5897fb",
+                        barThickness: 15,
+                        data: Array.from({ length: 12 }).map((_, index) => {
+                            const monthlyOrder = orderData.find(order => order._id.month === index + 1);
+                            return monthlyOrder ? monthlyOrder.count : 0;
+                        })
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                        },
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        })
+
+        const filterSelect = document.getElementById('chart-filter2');
+        filterSelect.addEventListener('change', () => {
+            const filterValue = filterSelect.value;
+            if (filterValue === 'monthly') {
+                orderChart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                orderChart.data.datasets[0].data = Array.from({ length: 12 }).map((_, index) => {
+                    const monthlyOrder = orderData.find(order => order._id.month === index + 1);
+                    return monthlyOrder ? monthlyOrder.count : 0;
+                });
+                orderChart.update();
+            } else if (filterValue === 'yearly') {
+                const ordersByYear = orderData.reduce((acc, cur) => {
+                    const year = cur._id.year;
+                    const count = cur.count;
+                    if (year in acc) {
+                        acc[year] += count;
+                    } else {
+                        acc[year] = count;
+                    }
+                    return acc;
+                }, {});
+                const years = ['2021', '2022', '2023', '2024', '2025'];
+                orderChart.data.labels = years;
+                orderChart.data.datasets[0].data = years.map(year => ordersByYear[year] || 0);
+                orderChart.update();
+            }
+        })
+    }
+
+
+
+
+
+
+
+
+
+</script>
+<script>
+function filterTable() {
+  const startDate = new Date(document.getElementById('startDate').value);
+  const endDate = new Date(document.getElementById('endDate').value);
+
+  const rows = document.getElementById('salesTable').querySelectorAll('tbody tr');
+
+  rows.forEach(row => {
+    const dateCell = row.cells[3]; // Assuming date is in the 4th cell (index 3)
+    const date = new Date(dateCell.textContent);
+
+    if (date >= startDate && date <= endDate) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+
+</script>

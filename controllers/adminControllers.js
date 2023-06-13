@@ -1,6 +1,7 @@
 const adminHelper = require('../helpers/admin_helpers');
 const products = require('../models/product-model');
 const couponHelpers = require('../helpers/coupon-helpers')
+const categoryModel = require('../models/category-models')
 const layout = 'layouts/admin-layout'
 module.exports = {
 
@@ -24,7 +25,7 @@ module.exports = {
     if (admin.email === adminCredientials.email && admin.password === adminCredientials.password) {
       req.session.admin = admin
 
-      res.render('admin/admin-home', { layout,dashboard:true })
+      res.redirect('/admin/admin-dashboard')
     } else {
       res.redirect('/admin')
     }
@@ -94,7 +95,30 @@ orderstatuschange:(req,res)=>{
   adminHelper.ChangeOrderstatus(req.body).then((status)=>{
     res.json(status)
   })
-}
+},
+dashboard:async (req, res) => {
+
+  if (req.session.admin) {
+      const salesByMonth = await adminHelper.getSalesDetails()
+      const salesByYear = await adminHelper.getYearlySalesDetails()
+      const ordersByDate = await adminHelper.getOrdersByDate()
+      const categorySales = await adminHelper.getCategorySales()
+      const currmonth = new Date().getMonth() + 1
+      const currmonthsale = await salesByMonth.find(sales => sales._id === currmonth)
+      console.log(currmonthsale,"ffffffffffffffffffffffffffffffffffffffffffffff")
+      const prod = await adminHelper.coundprod()
+
+
+
+     adminHelper.getallorders().then((orders) => {
+
+          res.render('admin/admin-dashboard', { layout, orders, currmonthsale, salesByMonth, salesByYear, ordersByDate, prod, categorySales })
+      })
+  } else {
+      res.redirect('/admin')
+  }
+
+},
 
 
 
