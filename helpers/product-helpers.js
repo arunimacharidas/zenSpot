@@ -133,7 +133,7 @@ module.exports = {
 
     editProduct: (id, product, images) => {
 
-        if (images) {
+        if (images.length>0) {
             return new Promise((resolve, reject) => {
                 productModel.updateOne({ _id: id }, {
                     $set: {

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Evara</title>
+    <title>ZenSpot</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,6 +46,7 @@
                         <div class="panel-body row justify-content-around">
                             <span id="minErr" class="text-danger "></span>
                             <% (coupens||[]).forEach(coupon=>{%>
+                                
                                 <div class="card col-md-5 mt-5 ">
                                     <div class="card-body">
                                         <h3 class="card-title text-center">
@@ -69,7 +70,7 @@
                         </div>
                     </div>
                 </div> -->
-            </div>
+        </div>
         </div>
 
         <section class="mt-50 mb-50">
@@ -88,12 +89,12 @@
                     </div>
                     <form id="checkout-form">
                         <div class="row">
-                            
+
                             <div class="col-md-6 mb-sm-15">
                                 <div class="mb-25">
                                     <h4>Billing Details</h4>
                                 </div>
-                               
+
 
                                 <div class="form-group">
                                     <input type="text" required="" name="name" placeholder="Name *">
@@ -101,29 +102,29 @@
 
 
                                 <div class="form-group">
-                                    <input type="text"  name="billing_address" required="" placeholder="Address *">
+                                    <input type="text" name="billing_address" required="" placeholder="Address *">
                                 </div>
 
                                 <div class="form-group">
                                     <input required="" type="text" name="city" placeholder="City / Town *">
                                 </div>
                                 <div class="form-group">
-                                    <input required="" type="text"  name="state" placeholder="State / County *">
+                                    <input required="" type="text" name="state" placeholder="State / County *">
                                 </div>
                                 <div class="form-group">
-                                    <input required="" type="text"   name="zipcode" placeholder="Postcode / ZIP *">
+                                    <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *">
                                 </div>
-                                
+
 
                                 <div class="form-group">
-                                    
+
                                     <input type="text" name="userId" id="" value="<%= locals.user._id%>" hidden>
                                 </div>
-                            
+
 
                             </div>
-                            
-                            
+
+
                             <div class="col-md-6">
                                 <div class="order_review">
                                     <div class="mb-20">
@@ -238,10 +239,11 @@
                                     id="remove">remove Coupen</a> </span>
                         </div>
                         <div class="panel-collapse collapse coupon_form " id="coupon">
-    
+
                             <div class="panel-body row justify-content-around">
                                 <span id="minErr" class="text-danger "></span>
                                 <% (coupens||[]).forEach(coupon=>{%>
+                                    
                                     <div class="card col-md-5 mt-5 ">
                                         <div class="card-body">
                                             <h3 class="card-title text-center">
@@ -264,30 +266,40 @@
                                     <%})%>
                             </div>
                         </div>
+                    </div> -->
                     </div>
                     <div class="col-md-5">
                         <div class="toggle_info">
-                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Address</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Select Address</a></span>
+                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Address</span> <a
+                                    href="#loginform" data-bs-toggle="collapse" class="collapsed"
+                                    aria-expanded="false">Select Address</a></span>
                         </div>
-                      <div class="panel-collapse collapse login_form" id="loginform">
-                        <div class="panel-body row justify-content-around">
-                          
-                          <% address.forEach(adress=>{%>
-                          <div class="card col-md-5 mt-5">
-                            <div class="card-body">
-                              <h3 class="card-title text-center">
-                                <%= adress.name %>
-                              </h3>
-                              <p class="card-text"><%=adress.billing_address %></p>
-                              <p class="card-text">Zipcode: <%=adress.zipcode %></p>
-                              <p class="card-text">State: <%=adress.state%></p>
-                              <p><strong>City</strong> <%= adress.city %></p>
+                        <div class="panel-collapse collapse login_form" id="loginform">
+                            <div class="panel-body row justify-content-around">
+
+                                <% address.forEach(adress=>{%>
+                                    <div class="card col-md-5 mt-5">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-center">
+                                                <%= adress.name %>
+                                            </h3>
+                                            <p class="card-text">
+                                                <%=adress.billing_address %>
+                                            </p>
+                                            <p class="card-text">Zipcode: <%=adress.zipcode %>
+                                            </p>
+                                            <p class="card-text">State: <%=adress.state%>
+                                            </p>
+                                            <p><strong>City</strong>
+                                                <%= adress.city %>
+                                            </p>
+                                        </div>
+                                        <button class="btn btn-sm"
+                                            onclick="fillAddressForm('<%= adress.name %>', '<%= adress.billing_address %>', '<%= adress.city %>', '<%= adress.state %>', '<%= adress.zipcode %>')">Apply</button>
+                                    </div>
+                                    <%})%>
                             </div>
-                            <button class="btn btn-sm" onclick="fillAddressForm('<%= adress.name %>', '<%= adress.billing_address %>', '<%= adress.city %>', '<%= adress.state %>', '<%= adress.zipcode %>')">Apply</button>
-                          </div>
-                          <%})%>
                         </div>
-                      </div>
                     </div>
                 </div>
             </div>
@@ -321,7 +333,7 @@
         total = parseInt(total)
         min = parseInt(min)
         dis = parseInt(dis)
-        if (cur < val && total > min ) {
+        if (cur < val && total > min) {
             let err = ''
             document.getElementById(cid).classList.add('d-none')
 
@@ -371,12 +383,12 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
                 retry = response
-                console.log(response,"auni,,,,aaar")
+                console.log(response, "auni,,,,aaar")
                 if (response.cod) {
                     location.href = '/orderplaced'
 
                 }
-                 else {
+                else {
                     razorPayPayment(response)
                 }
             }
@@ -384,9 +396,9 @@
     })
 
     function razorPayPayment(order) {
-        console.log(order,'sddddddddffff')
+        console.log(order, 'sddddddddffff')
         const amount = parseInt(order.totalamount)
-        console.log(amount,"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+        console.log(amount, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
         var options = {
             "key": "rzp_test_gSKuhb79bBJ2df", // Enter the Key ID generated from the Dashboard
             "amount": `${amount}`, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -439,19 +451,13 @@
             method: 'post',
             success: (response) => {
                 if (response.status) {
-                    Swal.fire({
-                        title: 'Sucess!',
-                        text: 'Payment Successful',
-                        icon: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Yes',
-                    }).then((result) => {
-                        console.log('verified');
-                        if (result.isConfirmed) {
+                    console.log("????????????????????????????????????????????");
+
+                    console.log('verified');
+                    // if (result.isConfirmed) {
                     window.location.href = '/orderplaced';
-                    }
-                    });
+                    // }
+
                 }
 
             }

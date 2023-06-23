@@ -39,7 +39,7 @@
                 <li class="menu-item <% if (locals.dashboard) { %>
                  active
                 <% } %>">
-                    <a class="menu-link" href="/admin"> <i class="icon material-icons md-home"></i>
+                    <a class="menu-link" href="/admin/admin-dashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
@@ -53,7 +53,7 @@
 
                 </li> -->
 
-                <li class="menu-item has-submenu <% if (locals.product) { %>
+                <li class="menu-item has-submenu <% if (locals.products) { %>
                     active
                    <% } %>">
                     <a class="menu-link" href=""> <i class="icon material-icons md-add_box"></i>
@@ -80,7 +80,9 @@
                         <span class="text">All Users</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item<% if (locals.orders) { %>
+                    active
+                   <% } %>  ">
                     <a class="menu-link" href="/admin/orderlists"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>

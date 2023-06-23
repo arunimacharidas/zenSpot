@@ -5,7 +5,7 @@ const categoryModel = require('../models/category-models')
 const layout = 'layouts/admin-layout'
 module.exports = {
 
-  getAdminlogin: (req, res) => {
+getAdminlogin: (req, res) => {
     if (req.session.admin) {
       res.render('admin/admin-home',{ layout,dashboard:true })
     } else {
@@ -13,8 +13,6 @@ module.exports = {
     }
 
   },
-  /***********admin loginside********************* */
-
   postAdminlogin: (req, res) => {
     const admin = req.body
     console.log(admin);
@@ -29,27 +27,34 @@ module.exports = {
     } else {
       res.redirect('/admin')
     }
-/********************************admin password and email**************** */
-
-
   },
-  adminhome: (req, res) => {
-    res.render('admin/admin-home', { layout,dashboard:true });
-  },
-  /**************************admin home page*************************/
+  adminhome:async (req, res) => {
+    if (req.session.admin) {
+      const salesByMonth = await adminHelper.getSalesDetails()
+      const salesByYear = await adminHelper.getYearlySalesDetails()
+      const ordersByDate = await adminHelper.getOrdersByDate()
+      const categorySales = await adminHelper.getCategorySales()
+      const currmonth = new Date().getMonth() + 1
+      const currmonthsale = await salesByMonth.find(sales => sales._id === currmonth)
+      const prod = await adminHelper.coundprod()
 
-  adminAllusers: (req, res) => {
+
+
+     adminHelper.getallorders().then((orders) => {
+    res.redirect('/admin/admin-dashboard',{ layout, orders, currmonthsale, salesByMonth, salesByYear, ordersByDate, prod, categorySales });
+     })
+  }
+},
+adminAllusers: (req, res) => {
     adminHelper.getAllusers().then((Allusers) => {
       res.render('admin/All-users', { layout, Allusers,users:true });
     })
   },
-  /*************allusers display********************************** */
   adminLogout: (req, res) => {
     req.session.admin = null
     res.redirect('/admin')
 
   },
-  /*********************************adminlogout********************** */
   UserStatus: (req, res) => {
     const id = req.params.id
     adminHelper.blockUser(id).then(() => {
@@ -69,11 +74,9 @@ orderStatus: (req, res) => {
   })
 },
 getcoupon:(req,res)=>{
-  res.render('Admin/admin-addcoupoen')
+  res.render('Admin/admin-addcoupoen',{layout})
 },
 postcoupon:(req,res)=>{
-  console.log('::::::::::::::::::::::::::::admin-addcoupon')
-  console.log(req.body,'}}}}}}}}}}}}}}}}}}}}}}}}}}}')
   couponHelpers.couponAdd(req.body).then(()=>{
     res.redirect('/admin/admin-allcoupens')
   })
@@ -87,7 +90,7 @@ allcoupon:(req,res)=>{
 couponstatus:(req,res)=>{
  const id =  req.params.id 
  couponHelpers.Couponstatus(id).then(()=>{
-  res.redirect('admin/admin-allcoupoens')
+  res.redirect('/admin/admin-allcoupens')
 
  })
 },
@@ -105,13 +108,8 @@ dashboard:async (req, res) => {
       const categorySales = await adminHelper.getCategorySales()
       const currmonth = new Date().getMonth() + 1
       const currmonthsale = await salesByMonth.find(sales => sales._id === currmonth)
-      console.log(currmonthsale,"ffffffffffffffffffffffffffffffffffffffffffffff")
       const prod = await adminHelper.coundprod()
-
-
-
-     adminHelper.getallorders().then((orders) => {
-
+      adminHelper.getallorders().then((orders) => {
           res.render('admin/admin-dashboard', { layout, orders, currmonthsale, salesByMonth, salesByYear, ordersByDate, prod, categorySales })
       })
   } else {
@@ -119,6 +117,13 @@ dashboard:async (req, res) => {
   }
 
 },
+adminorderdetails: (req, res) => {
+  const orderId = req.params.id
+  adminHelper.singleOrder(orderId).then((orderdetails) => {
+      let total = 0
+      res.render('admin/orderdetails', { layout, orderdetails, total })
+  })
+}
 
 
 

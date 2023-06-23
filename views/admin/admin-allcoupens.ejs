@@ -17,14 +17,14 @@
                 <p>Lorem ipsum dolor sit amet.</p>
             </div>
             <div>
-                <a href="/admin/admin-addcoupoen"> <button class="btn btn-md rounded font-sm " >Add Coupon </button></a>
+                <a href="/admin/admin-addcoupoen"> <button class="btn btn-md rounded font-sm ">Add Coupon </button></a>
             </div>
         </div>
         <div class="card mb-4">
             <header class="card-header">
                 <div class="row gx-3">
                     <div class="col-lg-4 col-md-6 me-auto">
-                        
+
                     </div>
                     <div class="col-lg-2 col-6 col-md-3">
                         <select class="form-select">
@@ -61,43 +61,52 @@
 
 
                         <tbody>
+
                             <% coupens.forEach((coupen,index)=>{%>
-                                <tr>
-                                    <td>
-                                        <%= index+1 %>
-                                    </td>
-                                    <td><b>
-                                            <%= coupen.name %>
-                                        </b></td>
-                                    <td>
-                                        <b><%= coupen.code %></b>
-                                    </td>
-                                    <td><b><%= coupen.validity.toLocaleDateString() %></b></td>
-                                    <td>
-                                        <%= coupen.maxAmount %>
-                                    </td>
-                                    <td><%= coupen.minAmount %></td>
-                                  
-                                    <td>
-                                        <% if(coupen.status){%>
-                                            <span class="badge rounded-pill alert-success">Active</span>
-                                    
-                                    <%}else{%>
-                                        <span class="badge rounded-pill alert-danger">Disabled</span>
                                 
-                                <%}%>
-                                    </td>
-                                    <td class="text-end">
-                                        <% if(coupen.status){%>
-                                            <a href="/admin/coupenstatus/<%= coupen._id %>"
-                                                class="btn btn-md-danger btn-danger rounded font-sm">Disable</a>
-                                            <%}else{%>
+                                    <tr>
+                                        <td>
+                                            <%= index+1 %>
+                                        </td>
+                                        <td><b>
+                                                <%= coupen.name %>
+                                            </b></td>
+                                        <td>
+                                            <b>
+                                                <%= coupen.code %>
+                                            </b>
+                                        </td>
+                                        <td><b>
+                                                <%= coupen.validity.toLocaleDateString() %>
+                                            </b></td>
+                                        <td>
+                                            <%= coupen.maxAmount %>
+                                        </td>
+                                        <td>
+                                            <%= coupen.minAmount %>
+                                        </td>
+
+                                        <td>
+                                            <% if(coupen.status){%>
+                                                <span class="badge rounded-pill alert-success">Active</span>
+
+                                                <%}else{%>
+                                                    <span class="badge rounded-pill alert-danger">Disabled</span>
+
+                                                    <%}%>
+                                        </td>
+                                        <td class="text-end">
+                                            <% if(coupen.status){%>
                                                 <a href="/admin/coupenstatus/<%= coupen._id %>"
-                                                    class="btn btn-md rounded font-sm">Active</a>
-                                                <%}%>
-                                    </td>
+                                                    class="btn btn-md-danger btn-danger rounded font-sm">Disable</a>
+                                                <%}else{%>
+                                                    <a href="/admin/coupenstatus/<%= coupen._id %>"
+                                                        class="btn btn-md rounded font-sm">Active</a>
+                                                    <%}%>
+                                        </td>
                                     </tr>
-                                    <%})%>
+                                    
+                                        <%})%>
                         </tbody>
                     </table>
                 </div> <!-- table-responsive //end -->

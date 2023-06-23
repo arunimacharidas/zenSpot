@@ -2,8 +2,11 @@
 const { trusted } = require('mongoose')
 const userHelper = require('../helpers/user-helper')
 const productHelpers = require('../helpers/product-helpers')
-const accountSid = 'AC2c8b8738c611568527d76c9c6ecd8fc6';
-const authToken = '5a18cc2d92b67f464e96bad33830d3dd';
+require("dotenv").config();
+
+const accountSid = process.env.accountSid;
+const authToken = process.env.authToken;
+const services = process.env.services
 const userModel = require('../models/user-model')
 const cartHelpers = require('../helpers/Cart_helpers');
 const Cart_helpers = require('../helpers/Cart_helpers');
@@ -26,38 +29,18 @@ module.exports = {
     
   
   },
-/*************login *************** */
-  login: function (req, res) {
+
+login: function (req, res) {
     if (req.session.user) {
       res.redirect('/')
     } else {
       res.render('user/login')
     }
   },
-/****************signup*************** */
-  signup: function (req, res, next) {
-
-    res.render('user/signup')
-  },
-/*****************postsigup***********/
-  postSignup: async (req, res) => {
-    let data = req.body
-    console.log(data);
-    userHelper.postSignup(data).then((newuser) => {
-      req.session.user = newuser
-      console.log(req.session.user);
-      res.redirect('/login')
-    }).catch((err) => {
-      res.redirect('/signup')
-    })
-  },
-  /***************postlogin************ */
-
-  postLogin: (req, res) => {
+ postLogin: (req, res) => {
     let user = req.body
 
     userHelper.postLogin(user).then((status) => {
-      console.log(status, "user status before login");
       if (status) {
         req.session.user = status.user
 
@@ -70,19 +53,33 @@ module.exports = {
     })
 
   },
-  /***********logout***************** */
+signup: function (req, res, next) {
 
-  Logout: (req, res) => {
+    res.render('user/signup')
+  },
+ postSignup: async (req, res) => {
+    let data = req.body
+    console.log(data);
+    userHelper.postSignup(data).then((newuser) => {
+      req.session.user = newuser
+      res.redirect('/login')
+    }).catch((err) => {
+      res.redirect('/signup')
+    })
+  },
+ 
+
+ Logout: (req, res) => {
     req.session.user = null;
     res.redirect('/')
   },
-  /**************otplogin************* */
-  otplogin: function (req, res) {
+  
+otplogin: function (req, res) {
     res.render('user/otpphone', )
 
   },
-  /********************otpvalidation****** */
-  otpvalidation: function (req, res) {
+  
+otpvalidation: function (req, res) {
     const phonenumber = req.body.Number
     req.session.phone = phonenumber
     userHelper.otpGenerate(phonenumber).then((response) => {
@@ -92,17 +89,14 @@ module.exports = {
       res.redirect('/login')
     })
   },
-  /**********otp verfication******** */
-  Otpverify: async (req, res) => {
-    console.log("fregillllllllllllllllllllllllll")
+  
+Otpverify: async (req, res) => {
     const otp = req.body.otp
     const phone = req.session.phone
-
-    client.verify.v2.services('VAdbd0e8ae7614095d1b06f6a4ddfe82a3')
+    client.verify.v2.services
       .verificationChecks
       .create({ to: `+91${phone}`, code: otp })
       .then(async (verification) => {
-        // console.log(verification);
         if (verification.status === 'approved') {
           const user = await userModel.find({ phone: phone })
           req.session.user = user
@@ -111,61 +105,49 @@ module.exports = {
           let Err = "invalid otp"
           res.render('user/otp', {  Err })
         }
-      });
+      }); 
+},
+resendOtp: (req, res) => {
+  const phone = req.session.phone
+  userHelper.otpGenerate(phone).then(() => {
+    res.send()
+  })
+},
 
-
-  },
-  /**********single product*************** */
-
-  Oneproduct: (req, res) => {
+Oneproduct: (req, res) => {
     const id = req.params.id;
-    console.log(id, 'njccdnncdndcndnnnvn');
-
-    userHelper.ProductSingle(id)
+    const user = req.session.user
+     userHelper.ProductSingle(id)
       .then((Oneproduct) => {
-        res.render('user/singleproduct', { Oneproduct });
+        res.render('user/singleproduct', { Oneproduct,user});
       })
       .catch((err) => {
-        console.log(err);
         res.redirect('/');
       });
-/*****************resend otp***************** */
+  }, 
 
-  }, resendOtp: (req, res) => {
-    const phone = req.session.phone
-    console.log(phone);
-    userHelper.otpGenerate(phone).then(() => {
-      res.send()
-    })
-  },
-
-  /*************************forgottenpassword********** */
-  forgottenpassword: function (req, res) {
+forgottenpassword: function (req, res) {
     res.render('user/forgotphone')
 
   },
-  /********forgototp************ */
-  forgotOtp: function (req, res) {
+forgotOtp: function (req, res) {
     const phonenumber = req.body.Number
     req.session.phone = phonenumber
     userHelper.forgottenpasswordGenerate(phonenumber).then((response) => {
       res.render('user/forgottenOtp', { layout: false })
     }).catch((err) => {
-      console.log(err)
       res.redirect('/login')
     })
   },
-  /*****************forgotverify************ */
-  forgotverify: async (req, res) => {
+  
+forgotverify: async (req, res) => {
   
     const otp = req.body.otp
     const phone = req.session.phone
-    console.log(phone);
-    client.verify.v2.services('VAdbd0e8ae7614095d1b06f6a4ddfe82a3')
+    client.verify.v2.services
       .verificationChecks
       .create({ to: `+91${phone}`, code: otp })
       .then(async (verification) => {
-        console.log(verification);
         if (verification.status === 'approved') {
           const user = await userModel.find({ phone: phone })
           req.session.user = user
@@ -175,60 +157,54 @@ module.exports = {
           res.render('user/forgottenOtp', { layout: false, Err })
         }
       }).catch(error => {
-        console.log(error);
+       
       })
 
 
   },
-  /*****************resendotp********** */
-  resendOtp: (req, res) => {
+  
+resendOtp: (req, res) => {
     const phone = req.session.phone
-    console.log(phone);
     userHelper.forgottenpasswordGenerate(phone).then(() => {
       res.send()
     })
-
-
-
   },
-  /**************newpasswod setting********** */
-  newpassword: (req, res) => {
+  
+newpassword: (req, res) => {
     const phone = req.session.phone
-    console.log(phone,req.body.password);
     userHelper.newpassword(req.body.password,phone).then(()=>{
       res.redirect('/login')
     })
   },
-  /*********************shop************/ 
-  getShop: async (req, res) => {
+
+getShop: async (req, res) => {
     try {
       let page = req.query.page ?? 1;
       const response = await userHelper.getProducts(page);
       let products = response.products;
       let pages = response.totalPages;
+      const user = req.session.user
   
       const category = await categorySchema.find();
-      console.log("0909", category, "0909");
   
-      res.render('user/shop', { products, shop: true, pages, page,category });
+      res.render('user/shop', { products, shop: true, pages, page,category,user });
     } catch (error) {
-      // Handle any errors that occur during the execution
-      console.error(error);
+      
       res.status(500).send('Internal Server Error');
     }
   }
   ,
-  addToCart: (req, res) => {
+   addToCart: (req, res) => {
     const id = req.params.id;
     const userId = req.session.user._id;
-    console.log(userId,'/////////////////////////////////////////////////////////////');
+    
     cartHelpers.CartAdd(id, userId).then(() => {
       cartHelpers.getCartCount(userId).then((cartcount) => {
             res.json({ status: true, cartcount: cartcount })
         })
 
     }).catch((err) => {
-      console.log(err.message);
+     
         res.redirect('/')
     })
 },
@@ -236,7 +212,7 @@ getCart: (req, res) => {
     if (req.session.user) {
         const user = req.session.user
         const id = user._id
-        console.log(id,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
+        
         cartHelpers.getaddcart(id).then((prod) => {
             cartprod = prod.cartprod
             prod = prod.result
@@ -254,15 +230,16 @@ category_filter: async (req, res) => {
     const id = req.params.id;
     const pageSize = 1;
     const category = await categorySchema.findOne({ _id: id }); // Find the category by ID
-    console.log(category,"0090");
+    const user = req.session.user
+    
 
     const products = await productSchema.find({ productCategory: category.name }); // Find products with matching category
-    console.log(products,"0-----");
+    
     const pages = Math.ceil(products.length / pageSize); // Calculate the number of pages based on the number of products
 
-    res.render('user/shop2', { category, products, pages }); // Render the 'user/shop' view with the category, products, and pages data
+    res.render('user/shop2', { category, products, pages,user }); // Render the 'user/shop' view with the category, products, and pages data
   } catch (error) {
-    console.error(error);
+   
     res.status(500).send('Internal Server Error');
   }
 },
@@ -293,22 +270,22 @@ quantitychange: (req, res) => {
 },
 getcheckout: (req, res) => {
   const user = req.session.user
-  
-  const address=user.address
-  console.log(address,'///////////////////////////>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-  cartHelpers.getaddcart(user._id).then((prod) => {
+  userHelper.userAddres(user._id).then((address)=>{
+    cartHelpers.getaddcart(user._id).then((prod) => {
    
-          let  cartprod = prod.cartprod
-          prod = prod.result
-            couponHelpers.Allcoupon().then((coupens) => {
-            console.log(coupens,':::::::::::::::::::>>>>>>>>>>>>>>>>>>>>>>')
-            
-           
-            res.render('User/checkout', { user, prod, cartprod, coupens, address })
-        })
+      let  cartprod = prod.cartprod
+      prod = prod.result
+        couponHelpers.Allcoupon().then((coupens) => {
+        
+        
+       
+        res.render('User/checkout', { user, prod, cartprod, coupens, address })
+    })
 
 
+})
   })
+
 },
 postcheckout: async (req, res) => {
   let products = await cartHelpers.getCartProducts(req.body.userId)
@@ -321,9 +298,9 @@ postcheckout: async (req, res) => {
        else if(response.payment_option === 'online') {
           const total = req.body.totalamount
           const orderId = response._id;
-          console.log(total,orderId,'fgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfg');
+         
           cartHelpers.generateRazorpay(orderId, total).then((order) => {
-            console.log(order,'kllllllllllllllllllllllllllllllll');
+          
               res.json(order)
           })
       }
@@ -332,6 +309,25 @@ postcheckout: async (req, res) => {
       res.redirect('/shop')
   });
 },
+verifypayment: (req, res) => {
+
+ cartHelpers.verifyPayment(req.body).then(() => {
+  console.log("verify done");
+      cartHelpers.changePaymentstatus(req.body['order[receipt]']).then(() => {
+  console.log("status changed");
+
+         cartHelpers.emptyCart(req.session.user._id).then(() => {
+  console.log("cart empty");
+
+              res.json({ status: true })
+          })
+      }).catch((err) => {
+console.log("verification failed.................");
+          res.json({ status: false })
+      })
+  })
+},
+
 deleteOrder: (req, res) => {
  userHelper. DeleteOrders(req.body).then((response)=>{
       res.json(response)
@@ -340,24 +336,46 @@ deleteOrder: (req, res) => {
   })
 },
 placeOrder: (req, res) => {
-  res.render('user/order-placed')
+  const user = req.session.user
+  res.render('user/order-placed',{user})
 },
 getaddress: (req, res) => {
-  res.render('User/addaddress')
+  const user = req.session.user
+  res.render('User/addaddress',{user})
 },
 postaddress: (req, res) => {
   const address = req.body
   const id = req.session.user._id
- userHelper. PostAddress(address, id).then(() => {
+  
+ userHelper.PostAddress(address, id).then(() => {
       res.redirect('/addaddress')
   }).catch(() => {
       res.render('User/Page-404')
   })
 },
+alladdress:(req,res)=>{
+  const id = req.session.user._id
+  const user = req.session.user
+  userHelper.userAddres(id).then((address)=>{
+   
+    res.render('user/alladdress',{address,user})
+  })
+
+
+},
+deleteadress:(req,res)=>{
+  const id=req.session.user._id
+  const index=req.params.id
+  userHelper.deleteAddress(id,index).then(()=>{
+
+      res.redirect('/alladdress')
+  })
+
+},
 OneOrder: (req, res) => {
   const id = req.params.id
   userHelper.getOneOrder(id).then((orderdetails) => {
-    console.log(orderdetails,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+    
       let total = 0
       res.render('user/order_view', { orderdetails, total })
   })
@@ -378,7 +396,7 @@ orderdelete: (req, res) => {
   })
 },
 changepass: (req, res) => {
-  console.log('<<<<<<<<<<<<>>>>>>>>>>>>>>');
+
   const number = req.body.Number
   const password = req.body.password
  userHelper. ChangePass(number, password).then((response) => {
@@ -390,13 +408,19 @@ changepass: (req, res) => {
 },
 passchange: (req, res) => {
   const number= req.session.user.phone
-  console.log('//////////');
-  console.log(req.session.user);
-  res.render('user/changepass',{number})
+  const user = req.session.user
+
+  res.render('user/changepass',{number,user})
 },
-
- 
-
-
-
+invoice: (req, res) => {
+  const Id = req.params.id
+  userHelper.getOneOrder(Id).then((orderDetails) => {
+    
+      userHelper.generateInvoice(orderDetails).then(() => {
+          res.download('invoice.pdf')
+      }).catch((err) => {
+          console.log('Error creating invoice PDF:', err);
+      })
+  })
+}
 }

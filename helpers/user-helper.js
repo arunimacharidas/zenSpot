@@ -7,7 +7,9 @@ const productModel = require('../models/product-model');
 const ordermodel = require('../models/order-models')
 const { response } = require('express');
 const categoryModel = require('../models/category-models');
-
+const PDFDocument = require('pdfkit')
+const fs = require('fs')
+const doc = new PDFDocument()
 const client = require('twilio')(accountSid, authToken);
 
 
@@ -304,27 +306,6 @@ module.exports = {
             })
         });
     },
-    
-    addToWishlist: function (userId, productId) {
-        return new Promise(async (resolve, reject) => {
-            let wishlist = await wishlistModel.findOne({ id: userId })
-            if (wishlist) {
-                await wishlistModel.findOneAndUpdate(
-                    { id: userId },
-                    { $addToSet: { products: productId } },
-                    { new: true }
-                )
-                resolve()
-            } else {
-                wishlist = new wishlistModel({
-                    id: userId,
-                    products: [productId]
-                })
-                await wishlist.save()
-                resolve()
-            }
-        })
-    },
     getOrders: (id) => {
         return new Promise(async (resolve, reject) => {
             await ordermodel.find({ userId: id }).then((orders) => {
@@ -356,6 +337,82 @@ module.exports = {
                 })
             })
         })
+    },
+    userAddres:(id)=>{
+        return new Promise((resolve,reject)=>{
+            userModel.findById(id).then((user)=>{
+                resolve(user.address)
+            }).catch(()=>{
+                reject()
+            })
+        })
+        
+    },
+    deleteAddress:(id,x)=>{
+        return new Promise((resolve,reject)=>{
+            userModel.findById(id).then((user)=>{
+                user.address.splice(x,1)
+                user.save()
+                resolve()
+            }).catch(()=>{
+                reject()
+            })
+        })
+
+    },
+    generateInvoice: (orderDetails) => {
+        console.log(orderDetails)
+        return new Promise((resolve, reject) => {
+            const { id, name, billingAddress, city, district, state, zipcode, phone, paymentOption, status, products, date, totalAmount } = orderDetails;
+
+            formattedDate = date.toLocaleDateString('en-GB')
+
+            doc.font('Times-Roman').fontSize(18).text('INVOICE', { align: 'center' });
+            doc.fontSize(15).text('Shipping Address', 50, 150)
+            doc.fontSize(12).text(`Name: ${name}`, 50, 180)
+                .text(`Office/House No.: ${billingAddress}`)
+                .text(`City: ${city}`)
+                .text(`District: ${district}`)
+                .text(`State: ${state}`)
+                .text(`Zipcode: ${zipcode}`)
+                // .text(`Phone: ${phone}`)
+
+            doc.fontSize(15).text('Order Details', 345, 150)
+            doc.fontSize(12).text(`Invoice No: ${id}`, 345, 180)
+                .text(`Purchase Date: ${formattedDate}`)
+                .text(`Total Amount: ${totalAmount}`)
+                .text(`Payment Mode: ${paymentOption}`)
+            doc.moveTo(30, 300).lineTo(580, 300).stroke();
+            doc.moveTo(30, 140).lineTo(580, 140).stroke();
+            doc.moveTo(30, 170).lineTo(580, 170).stroke();
+
+
+            doc.fontSize(15).text('No.', 50, 340)
+                .text('Name', 100, 340)
+                .text('Quantity', 350, 340)
+                .text('Unit Price', 450, 340)
+                .text('Amount', 550, 340)
+
+            let y = 370;
+            products.forEach(({ name, price, quantity }, index) => {
+                y += 30;
+                doc.fontSize(12)
+                    .text(`${index + 1}`, 50, y)
+                    .text(name, 100, y)
+                    .text(quantity, 350, y)
+                    .text(price, 450, y)
+                    .text(price * quantity, 550, y)
+            })
+            doc.fontSize(16).text('Subtotal', 400, y + 50)
+            doc.fontSize(18).text(`${totalAmount}`, 550, y + 50)
+
+            const stream = doc.pipe(fs.createWriteStream('invoice.pdf'));
+            stream.on('finish', () => {
+                console.log('PDF created');
+                resolve();
+            });
+            doc.end();
+        });
     },
     
 }  

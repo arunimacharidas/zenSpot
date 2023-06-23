@@ -6,7 +6,6 @@ module.exports = {
     getAllusers: () => {
         return new Promise((resolve, reject) => {
             userModel.find().then((Allusers) => {
-                console.log(Allusers)
                 resolve(Allusers)
             }).catch((err) => {
                 console.log(err)
@@ -15,18 +14,18 @@ module.exports = {
 
         })
     },
-    /********************all users******************* */
+   
 
     blockUser: (id) => {
         return new Promise(async (resolve, reject) => {
             let user = await userModel.findOne({ _id: id })
             if (user.status === true) {
                 userModel.findOneAndUpdate({ _id: id }, { $set: { status: false } },{new:true}).then((newuser) => {
-                    console.log(newuser, 'aruuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu')
+                    
                 })
             } else {
                 userModel.findOneAndUpdate({ _id: id }, { $set: { status: true }},{new:true}).then((newuser) => {
-                    console.log(newuser, 'sandeeeeeppppppppppppppppppppppppp')
+                 
 
                 })
             }
@@ -137,8 +136,45 @@ module.exports = {
             })
         })
 
-    }
-    /**************************blockuser********************************* */
+    },
+    singleOrder: (orderId) => {
+        return new Promise((resolve, reject) => {
+            ordermodel.findById(orderId).populate('products.id').exec().then((order) => {
+                const products = order.products.map(product => {
+                    if (product.id) {
+                        return {
+                            id: product.id._id,
+                            name: product.id.productTitle,
+                            description: product.id.productDescription,
+                            category: product.id.productCategory,
+                            price: product.id.productPricing,
+                            quantity: product.quantity,
+                            images: product.id.productimage[0]
+                        }
+                    }
+                });
+                const orderDetails = {
+                    id: order._id,
+                    userId: order.userId,
+                    name: order.name,
+                    billingAddress: order.billing_address,
+                    city: order.city,
+                    state: order.state,
+                    zipcode: order.zipcode,
+                    phone: order.phone,
+                    paymentOption: order.payment_option,
+                    status: order.status,
+                    products: products,
+                    date: order.date,
+                    totalAmount: order.totalAmount
+                }
+                resolve(orderDetails)
+            }).catch((err) => {
+                reject(err)
+            })
+        });
+    },
+  
 
  
 }

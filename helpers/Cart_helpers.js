@@ -1,5 +1,6 @@
 const {response}=require('express')
 const cartModel = require('../models/cart-model');
+const orderModel= require("../models/order-models")
 const userControllers = require('../controllers/userControllers');
 const { Reject } = require('twilio/lib/twiml/VoiceResponse');
 const objectId = require('mongoose').objectId
@@ -93,7 +94,7 @@ module.exports = {
 
         })
     },
-    ProductRemove: (proid, Id) => {
+    ProductRemove: async(proid, Id) => {
         return new Promise(async (resolve, reject) => {
             const userCart = await cartModel.findOne({ userId: Id })
             if (userCart) {
@@ -191,7 +192,7 @@ module.exports = {
      generateRazorpay:(orderId,total)=>{
         return new Promise((resolve,reject)=>{
             var options = {
-                amount: total*100,  // amount in the smallest currency unit
+                amount: total*100,  
                 currency: "INR",
                 receipt: ""+orderId
               };
@@ -204,5 +205,48 @@ module.exports = {
               });
         })
     },
+    verifyPayment: (details) => {
+        return new Promise((resolve, reject) => {
+            const crypto = require('crypto')
+            let hmac = crypto.createHmac('sha256', 'tl9u7v8q2HYW6g0o0GFWjgcw')
+            hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
+            
+            hmac = hmac.digest('hex')
+            console.log(hmac,details['payment[razorpay_signature]'],'///////////////,,,,,,,,,,,,,,<,<<<<<<<<<<');
+            if (hmac === details['payment[razorpay_signature]']) {
+                resolve()
+            } else {
+                reject()
+            }
+        }).catch((err)=>{
+            
+            reject()
+        })
+    },
+    changePaymentstatus:(id)=>{
+       
+console.log(id,"iiiiiiiiiiiiddddddddddddd");
+        return new Promise((resolve,reject)=>{
+            // const orderId=parseInt(id)
+            orderModel.updateOne({_id:id},{$set:{status:'placed'}}).then(()=>{
+                resolve()
+            }).catch(()=>{
+                reject()
+            })
+        })
+
+    },
+    emptyCart: (id) => {
+        return new Promise(async (resolve, reject) => {
+            const userCart = await cartModel.findOne({ userId: id })
+            if (userCart) {
+                userCart.deleteOne().then((response) => {
+                    resolve(response)
+                }).catch((err) => {
+                    reject()
+                })
+            }
+        })
+    }
              
 }

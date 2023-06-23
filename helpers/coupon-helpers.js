@@ -2,7 +2,6 @@ const couponModel = require('../models/coupen-model')
 module.exports={
     couponAdd:(details)=>{
         return new Promise((resolve,reject)=>{
-            console.log('>>>>>>>>>>>>>>>>>>>>>>>')
             const newcoupon = new couponModel({
                 code:details.code,
                 validity:details.validity,
@@ -13,10 +12,9 @@ module.exports={
 
             })
             newcoupon.save().then((coupen)=>{
-                console.log(coupen,'PPPPPPPPPPPPPPPPPPPPPPPP')
                 resolve()
             })
-            console.log('new coupon added,""""""""""""""""')
+            
         })
     },
     Allcoupon:()=>{
