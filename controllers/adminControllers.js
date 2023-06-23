@@ -15,7 +15,6 @@ getAdminlogin: (req, res) => {
   },
   postAdminlogin: (req, res) => {
     const admin = req.body
-    console.log(admin);
     const adminCredientials = {
       email: "admin@gmail.com",
       password: "admin"

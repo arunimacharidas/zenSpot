@@ -7,7 +7,6 @@ module.exports = {
     getAllCategory: () => {
         return new Promise((resolve, reject) => {
             categoryModel.find().then((categories) => {
-                // console.log(categories)
                 resolve(categories)
             }).catch((error) => {
                 console.log(error);
@@ -15,40 +14,34 @@ module.exports = {
             })
         })
     },
-    /************************catrgory************************* */
+    
 
     addNewcategory: (body) => {
         return new Promise(async(resolve, reject) => {
             await categoryModel.findOne({
                 name:{'$regex':`${body.category}`,'$options':'i'}
               }).then((categoryExist) => {
-                console.log(categoryExist);
-                console.log("categoryExist");
                 if (categoryExist) {
                     resolve({status:false})
                 } else {
                     new categoryModel({
                         name: body.category
                     }).save().then((newCategory) => {
-                        console.log(newCategory);
-                        console.log("newcategory");
                         resolve({status:true ,data:newCategory})
                         
                     }).catch((error) => {
-                        console.log(error);
                         reject(error)
                     })
                 }
             })
         })
     },
-/**************************************addcategory********************** */
+
     DisplayAllcategory: () => {
         return new Promise((resolve, reject) => {
             categoryModel.find().then((allCategory) => {
                 resolve(allCategory)
             }).catch((error) => {
-                console.log(error)
                 reject(error)
             })
         })
@@ -129,7 +122,7 @@ module.exports = {
         })
 
     },
-    /***********************editproduct************************** */
+    
 
     editProduct: (id, product, images) => {
 
@@ -172,9 +165,8 @@ module.exports = {
         }
 
     },
-/************************************blockproduct****************************** */
+
     blockProduct: (id) => {
-        console.log(id);
         return new Promise(async (resolve, reject) => {
             const item = await productModel.findOne({ _id: id })
             if (item) {
@@ -188,14 +180,13 @@ module.exports = {
 
         })
     },
-    /*********************************show product*********************** */
+   
 
     showProducts: () => {
         return new Promise((resolve, reject) => {
             productModel.find().sort({createAt:-1}).then((products) => {
                 resolve(products)
             }).catch((error) => {
-                console.log(error)
                 reject(error)
             })
         })

@@ -44,14 +44,6 @@
                     </a>
                 </li>
 
-                <!--  <li class="menu-item <% if (locals.orders) { %>
-                    active
-                   <% } %>">
-                    <a class="menu-link" href=""> <i class="icon material-icons md-shopping_cart"></i>
-                        <span class="text">Orders</span>
-                    </a>
-
-                </li> -->
 
                 <li class="menu-item has-submenu <% if (locals.products) { %>
                     active
@@ -211,26 +203,7 @@
   });
   </script>
 </body>
-<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> -->
 
-<!-- <script>
-    $(document).ready(function() {
-      const currentUrl = window.location.href;
-      console.log("Current URL:", currentUrl);
-  
-      $(".menu-aside li").removeClass("active");
-      $(".menu-aside li").each(function() {
-        const menuItemUrl = $(this).find('a').prop('href');
-        console.log("Menu Item URL:", menuItemUrl);
-        if (menuItemUrl === currentUrl) {
-          $(this).addClass("active");
-          console.log("Match found for URL:", menuItemUrl);
-          return false; // exit the loop once the active menu item is found
-        }
-      });
-    });
-  </script>
-   -->
 
 
 

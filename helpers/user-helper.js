@@ -22,7 +22,6 @@ module.exports = {
                 } else {
                     bcrypt.hash(data.password, 10, (err, hashpass) => {
                         if (err) {
-                            console.log(err);
                             reject()
                         } else {
                             new userModel({
@@ -42,7 +41,7 @@ module.exports = {
         })
 
     },
-/****************************signup******************************** */
+
     postLogin: (loginData) => {
         return new Promise((resolve, reject) => {
             userModel.findOne({ email: loginData.Email, status: true }).then((user) => {
@@ -65,7 +64,6 @@ module.exports = {
             })
         })
     } ,
-    /**********************opt gernerate******************************************** */
 
     otpGenerate: (phonenumber) => {
         return new Promise((resolve, reject) => {
@@ -87,9 +85,9 @@ module.exports = {
             })
         })
     },
-    /************************otp verify***************************** */
+    
     Otpverify: (req, res) => {
-        console.log("fregillllllllllllllllllllllllll")
+        
 
 
         //  userHelper.verifyOtp(otp,phone).then((response)=>{
@@ -108,7 +106,7 @@ module.exports = {
         //  })
 
     },
-    /***********************single product******************************** */
+   
     ProductSingle: (id) => {
         return new Promise((resolve, reject) => {
             productModel.findOne({ _id: id }).then((OneProduct) => {
@@ -118,7 +116,7 @@ module.exports = {
             })
         })
     },
-    /**************************forgotten password******************************* */
+   
     forgottenpasswordGenerate: (phonenumber) => {
         return new Promise((resolve, reject) => {
             userModel.findOne({ phone: phonenumber, status: true }).then((user) => {
@@ -128,8 +126,6 @@ module.exports = {
                         .create({ to: `+91${user.phone}`, channel: 'sms' })
                         .then(verification => console.log(verification.status))
                         .catch(error => {
-
-                            console.log(error.message);
                         })
                     resolve()
                 } else {
@@ -142,28 +138,25 @@ module.exports = {
 
 
     },
-    /*************************verify password******************** */
+   
     forgotverify: (req, res) => {
-        console.log("fregillllllllllllllllllllllllll")
-
-
     },
-    /*******************resetpassword*************************** */
+   
     newpassword: async (password, phone) => {
         return new Promise((resolve, reject) => {
             if (password) {
                 bcrypt.hash(password, 10, (err, hashpass) => {
                     if (err) {
-                        console.log(err);
+                       
                         reject()
                     } else {
-                        console.log(hashpass);
+                       
                         userModel.updateOne({ phone: phone }, {
                             $set: {
                                 password: hashpass
                             }
                         }).then((response) => {
-                            console.log(response);
+                           
                             resolve()
                         })
                             .catch((err) => {
@@ -182,30 +175,23 @@ module.exports = {
 
 
     },
-    /****************products******************************** */
+   
     getProducts: (pageNum) => {
         return new Promise((resolve, reject) => {
                 const perPage = 4;
                 const skipCount = (pageNum - 1) * perPage;
                 productModel.countDocuments({}).then((totalCount) => {
                     const totalPages = Math.ceil(totalCount / perPage);
-                    console.log(totalPages, totalCount);
-                  
                     productModel.find()
                       .sort({ createdAt: -1 })
                       .skip(skipCount)
                       .limit(perPage)
                       .then((response) => {
-                        // Process the retrieved products
-                        console.log(response);
-                        
-
                         resolve({products:response,totalPages})
-                        // Perform further operations with the retrieved products
+                       
                       })
                       .catch((err) => {
-                        console.error(err);
-                        // Handle the error
+                      
                       });
                   });
                   
@@ -237,7 +223,6 @@ module.exports = {
                     products: newproducts
                 }).save().then(async(newOrder) => {
                     user.address=await newOrder.save()
-                    console.log(user.address,'++++++++++++++>>>>>>>>>>++++++++++>>>>>>><<<<<<<<<<<<<+++++++++>>>>>>>>>>>');
                     resolve(newOrder);
                 }).catch(() => {
                     reject();
@@ -283,7 +268,6 @@ module.exports = {
                         }
                     }
                 });
-                console.log(products);
                 const orderDetails = {
                     id: order._id,
                     userId: order.userId,
@@ -375,7 +359,7 @@ module.exports = {
                 .text(`District: ${district}`)
                 .text(`State: ${state}`)
                 .text(`Zipcode: ${zipcode}`)
-                // .text(`Phone: ${phone}`)
+                
 
             doc.fontSize(15).text('Order Details', 345, 150)
             doc.fontSize(12).text(`Invoice No: ${id}`, 345, 180)

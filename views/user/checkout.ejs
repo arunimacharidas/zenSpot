@@ -29,47 +29,7 @@
 
     <main class="main">
         <div class="container">
-            <!-- <div class="row">
-                <div class="col-md-6 ">
-                </div>
-                <div class="col-md-6">
-                    <div class="toggle_info">
-                        <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
-                                href="#coupon" data-bs-toggle="collapse" class="collapsed"
-                                aria-expanded="false">Click here to enter your code</a> <a
-                                onclick="location.reload()"
-                                class="btn-danger btn-sm btn-danger justify-content-between d-none"
-                                id="remove">remove Coupen</a> </span>
-                    </div>
-                    <div class="panel-collapse collapse coupon_form " id="coupon">
-
-                        <div class="panel-body row justify-content-around">
-                            <span id="minErr" class="text-danger "></span>
-                            <% (coupens||[]).forEach(coupon=>{%>
-                                
-                                <div class="card col-md-5 mt-5 ">
-                                    <div class="card-body">
-                                        <h3 class="card-title text-center">
-                                            <%= coupon.name %>
-                                        </h3>
-                                        <p class="card-text">All Above:<%=coupon.minAmount %>
-                                        </p>
-                                        <p class="card-text"> Discound:<%=coupon.maxAmount %>
-                                        </p>
-                                        <p class="card-text"> Validity:<%=coupon.validity.toLocaleDateString()%>
-                                        </p>
-                                        <p><strong>Code:</strong>
-                                            <%= coupon.code %>
-                                        </p>
-                                    </div>
-                                    <button class="btn  btn-sm mb-10 " id="<%= coupon._id%>"
-                                        onclick="return coupon('<%=coupon._id %>','<%= prod.totalAmount %>','<%=coupon.minAmount %>','<%=coupon.maxAmount %>','<%=coupon.validity%>','<%=coupon.perc %>' )">Apply</button>
-                                </div>
-
-                                <%})%>
-                        </div>
-                    </div>
-                </div> -->
+        
         </div>
         </div>
 
@@ -305,21 +265,7 @@
             </div>
         </section>
     </main>
-    <!-- Preloader Start -->
-    <!-- <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="text-center">
-                    <h5 class="mb-5">Now Loading</h5>
-                    <div class="loader">
-                        <div class="bar bar1"></div>
-                        <div class="bar bar2"></div>
-                        <div class="bar bar3"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
+
 </body>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
@@ -406,11 +352,8 @@
             "name": "420 X FourTwenty",
             "description": "Test Transaction",
             "image": "https://example.com/your_logo",
-            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "order_id": order.id, 
             "handler": function (response) {
-                // alert(response.razorpay_payment_id);
-                // alert(response.razorpay_order_id);
-                // alert(response.razorpay_signature)
 
                 verifyPayment(response, order)
             },

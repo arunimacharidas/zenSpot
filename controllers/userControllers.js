@@ -59,7 +59,6 @@ signup: function (req, res, next) {
   },
  postSignup: async (req, res) => {
     let data = req.body
-    console.log(data);
     userHelper.postSignup(data).then((newuser) => {
       req.session.user = newuser
       res.redirect('/login')
@@ -229,15 +228,15 @@ category_filter: async (req, res) => {
   try {
     const id = req.params.id;
     const pageSize = 1;
-    const category = await categorySchema.findOne({ _id: id }); // Find the category by ID
+    const category = await categorySchema.findOne({ _id: id }); 
     const user = req.session.user
     
 
-    const products = await productSchema.find({ productCategory: category.name }); // Find products with matching category
+    const products = await productSchema.find({ productCategory: category.name }); 
     
-    const pages = Math.ceil(products.length / pageSize); // Calculate the number of pages based on the number of products
+    const pages = Math.ceil(products.length / pageSize); 
 
-    res.render('user/shop2', { category, products, pages,user }); // Render the 'user/shop' view with the category, products, and pages data
+    res.render('user/shop2', { category, products, pages,user });
   } catch (error) {
    
     res.status(500).send('Internal Server Error');
@@ -261,7 +260,6 @@ cartClear: (req, res) => {
     })
 },
 quantitychange: (req, res) => {
-    console.log(req.body.cart)
     cartHelpers.changeQuantity(req.body).then((response) => {
         res.json(response)
     }).catch((err) => {
@@ -305,24 +303,17 @@ postcheckout: async (req, res) => {
           })
       }
   }).catch((error) => {
-      console.log(error);
       res.redirect('/shop')
   });
 },
 verifypayment: (req, res) => {
 
  cartHelpers.verifyPayment(req.body).then(() => {
-  console.log("verify done");
       cartHelpers.changePaymentstatus(req.body['order[receipt]']).then(() => {
-  console.log("status changed");
-
-         cartHelpers.emptyCart(req.session.user._id).then(() => {
-  console.log("cart empty");
-
+      cartHelpers.emptyCart(req.session.user._id).then(() => {
               res.json({ status: true })
           })
       }).catch((err) => {
-console.log("verification failed.................");
           res.json({ status: false })
       })
   })

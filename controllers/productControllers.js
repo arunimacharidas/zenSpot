@@ -21,7 +21,6 @@ module.exports = {
   },
 
   getNewcategory: (req, res) => {
-    console.log(req.body);
     productHelper.addNewcategory(req.body).then((response) => {
       res.json({addNewcategory:response.data,status:response.status})
     }).catch((error) => {

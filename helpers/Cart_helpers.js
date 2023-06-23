@@ -45,7 +45,6 @@ module.exports = {
     getaddcart: (id) => {
         return new Promise((resolve, reject) => {
             const userCart = cartModel.findOne({ userId: id })
-            console.log(userCart.userId,'{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{');
             if (!userCart) {
 
                 reject()
@@ -132,7 +131,6 @@ module.exports = {
     getCartCount: (id) => {
         return new Promise(async (resolve,reject) => {
             let cart = await cartModel.findOne({ userId: id })
-            console.log(cart,']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
             let cartcount = 0
 
             if (cart?.products?.length>0) {
@@ -212,7 +210,6 @@ module.exports = {
             hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
             
             hmac = hmac.digest('hex')
-            console.log(hmac,details['payment[razorpay_signature]'],'///////////////,,,,,,,,,,,,,,<,<<<<<<<<<<');
             if (hmac === details['payment[razorpay_signature]']) {
                 resolve()
             } else {
@@ -224,8 +221,6 @@ module.exports = {
         })
     },
     changePaymentstatus:(id)=>{
-       
-console.log(id,"iiiiiiiiiiiiddddddddddddd");
         return new Promise((resolve,reject)=>{
             // const orderId=parseInt(id)
             orderModel.updateOne({_id:id},{$set:{status:'placed'}}).then(()=>{

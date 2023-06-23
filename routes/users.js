@@ -1,14 +1,12 @@
 var express = require('express');
 var router = express.Router();
-// const bycrpt = require('bcrypt')
 const { isloggedIn}=require('../middlewares/usermiddleware')
-// const db = require('../models/connection')
 const userControllers = require('../controllers/userControllers')
 const productHelper = require('../helpers/product-helpers');
 const productControllers = require('../controllers/productControllers');
 const {login,postLogin,signup,postSignup,Logout,otplogin,otpvalidation,Otpverify,Oneproduct,resendOtp,forgottenpassword,forgotOtp,forgotverify,newpassword,getShop,addToCart,getCart,removeproducts,cartClear,quantitychange,getcheckout,postcheckout,deleteOrder,placeOrder,getaddress,postaddress,alladdress,deleteadress,OneOrder,userprofile,orderdelete,passchange,changepass,invoice,category_filter,verifypayment} = require('../controllers/userControllers')
 router.use(userControllers.homemiddlewares)
-/* GET users listing. */
+
 router.get('/', function(req, res, next) {
   const user = req.session.user
   productHelper.showProducts().then((products)=>{
@@ -79,7 +77,7 @@ router.get('/order-placed',placeOrder)
 
 
 
-// router.get('/home',userControllers.home) 
+
 
 
 

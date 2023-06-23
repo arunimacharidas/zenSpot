@@ -6,8 +6,7 @@ const upload = require('../middlewares/multer')
 const {getAdminlogin,postAdminlogin,adminhome,adminAllusers,adminLogout, UserStatus,getAllOrders,orderStatus,getcoupon,postcoupon,allcoupon,couponstatus,orderstatuschange,dashboard,adminorderdetails} = require('../controllers/adminControllers')
 const {getAddProducts,getAddcategory,getNewcategory,SetProducts, postShowproducts,geteditproduct, blockproduct,posteditProduct,editcategory,categoryupdate,blockcategory} = require('../controllers/productControllers');
 const{isadminloggedIn}= require("../middlewares/adminmiddleware");
-// const adminmodel = require('../models/admin-model');
-// const { home } = require('../controllers/userControllers');
+
 
 
 /* GET home page. */
@@ -48,7 +47,7 @@ router.post('/ChangeOrderstatus',orderstatuschange)
 router.get('/admin-dashboard',isadminloggedIn,dashboard)
 router.get('/orderdetails/:id',isadminloggedIn,adminorderdetails)
 /*************************************************************************dasboard******************************************************************************* */
-// router.get('/editcategory/:id',editcategory)
+
 
 
 
