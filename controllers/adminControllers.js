@@ -73,7 +73,7 @@ orderStatus: (req, res) => {
   })
 },
 getcoupon:(req,res)=>{
-  res.render('Admin/admin-addcoupoen',{layout})
+  res.render('admin/admin-addcoupoen',{layout})
 },
 postcoupon:(req,res)=>{
   couponHelpers.couponAdd(req.body).then(()=>{
