@@ -374,7 +374,7 @@ OneOrder: (req, res) => {
 userprofile: (req, res) => {
   const user = req.session.user
   userHelper.getOrders(user._id).then((orders) => {
-      res.render('user/Profile', { user, orders })
+      res.render('user/profile', { user, orders })
   }).catch(() => {
       res.redirect('/')
   })
