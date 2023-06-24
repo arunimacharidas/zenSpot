@@ -374,7 +374,7 @@ OneOrder: (req, res) => {
 userprofile: (req, res) => {
   const user = req.session.user
   userHelper.getOrders(user._id).then((orders) => {
-      res.render('User/Profile', { user, orders })
+      res.render('user/Profile', { user, orders })
   }).catch(() => {
       res.redirect('/')
   })
@@ -383,7 +383,7 @@ orderdelete: (req, res) => {
  userHelper. DeleteOrders(req.body).then((response) => {
       res.json(response)
   }).catch(() => {
-      res.render('User/Page-404')
+      res.render('user/Page-404')
   })
 },
 changepass: (req, res) => {
