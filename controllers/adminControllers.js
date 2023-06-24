@@ -125,7 +125,6 @@ adminorderdetails: (req, res) => {
 }
 
 
-
 }
 
 

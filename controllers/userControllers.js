@@ -215,9 +215,9 @@ getCart: (req, res) => {
         cartHelpers.getaddcart(id).then((prod) => {
             cartprod = prod.cartprod
             prod = prod.result
-            res.render('User/cart', { prod, user, cartprod })
+            res.render('user/cart', { prod, user, cartprod })
         }).catch((err) => {
-            res.render('User/cart', { prod: false })
+            res.render('user/cart', { prod: false })
         })
     } else {
         res.redirect('/login')

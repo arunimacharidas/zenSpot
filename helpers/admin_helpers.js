@@ -34,7 +34,7 @@ module.exports = {
     },
     getallorders: () => {
         return new Promise(async (resolve, reject) => {
-            await ordermodel.find().then((orders) => {
+            await ordermodel.find({status:'Delivered'}).then((orders) => {
                 resolve(orders)
             }).catch(() => {
                 reject()
@@ -106,7 +106,7 @@ module.exports = {
     
             orders.forEach(order => {
                 order.products.forEach(product => {
-                    const category = product.id.productCategory;
+                    const category = product.id?.productCategory;
                     if (category) {
                         if (category in categorySales) {
                             categorySales[category] += 1;
@@ -147,12 +147,13 @@ module.exports = {
                             name: product.id.productTitle,
                             description: product.id.productDescription,
                             category: product.id.productCategory,
-                            price: product.id.productPricing,
+                            price: product.id.productPrice,
                             quantity: product.quantity,
                             images: product.id.productimage[0]
                         }
                     }
                 });
+            
                 const orderDetails = {
                     id: order._id,
                     userId: order.userId,
