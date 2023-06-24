@@ -349,7 +349,7 @@ alladdress:(req,res)=>{
   const user = req.session.user
   userHelper.userAddres(id).then((address)=>{
    
-    res.render('user/alladdress',{address,user})
+    res.render('user/Alladdress',{address,user})
   })
 
 
