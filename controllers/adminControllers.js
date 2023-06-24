@@ -67,6 +67,13 @@ adminAllusers: (req, res) => {
         res.render('admin/orderlist', { layout, orders })
     })
 },
+Getallorderslist: async (req, res) => {
+  await adminHelper. getallorderslist().then((orders) => {
+
+      res.render('admin/orderlist', { layout, orders })
+  })
+},
+
 orderStatus: (req, res) => {
   adminHelper.ChangeOrderstatus(req.body).then((status) => {
       res.json(status)

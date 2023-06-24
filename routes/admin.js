@@ -3,9 +3,10 @@ var router = express.Router();
 const bycrpt = require('bcrypt')
 const upload = require('../middlewares/multer')
 // const db = require('../models/connection')
-const {getAdminlogin,postAdminlogin,adminhome,adminAllusers,adminLogout, UserStatus,getAllOrders,orderStatus,getcoupon,postcoupon,allcoupon,couponstatus,orderstatuschange,dashboard,adminorderdetails} = require('../controllers/adminControllers')
+const {getAdminlogin,postAdminlogin,adminhome,adminAllusers,adminLogout, UserStatus,getAllOrders,orderStatus,getcoupon,postcoupon,allcoupon,couponstatus,orderstatuschange,dashboard,adminorderdetails,Getallorderslist} = require('../controllers/adminControllers')
 const {getAddProducts,getAddcategory,getNewcategory,SetProducts, postShowproducts,geteditproduct, blockproduct,posteditProduct,editcategory,categoryupdate,blockcategory} = require('../controllers/productControllers');
 const{isadminloggedIn}= require("../middlewares/adminmiddleware");
+const { isloggedIn } = require('../middlewares/usermiddleware');
 
 
 
@@ -35,6 +36,7 @@ router.post('/editproduct/:id',isadminloggedIn, upload.array('image',4),postedit
 router.get('/blockproduct/:id',isadminloggedIn,blockproduct)
 /***********************************************************************products***************************************************************************** */
 router.get('/orderlists',isadminloggedIn,getAllOrders)
+router.get('/orders', Getallorderslist)
 router.post('/changeOrderStatus',orderStatus)
 /***********************************************************************Allorders***************************************************************************** */
 router.get('/admin-addcoupoen',getcoupon)

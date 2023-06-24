@@ -41,6 +41,16 @@ module.exports = {
             })
         })
     },
+    getallorderslist: () => {
+        return new Promise(async (resolve, reject) => {
+            await ordermodel.find().then((orders) => {
+                resolve(orders)
+            }).catch(() => {
+                reject()
+            })
+        })
+    },
+    
     ChangeOrderstatus:(details)=>{
         return new Promise((resolve,reject)=>{
             ordermodel.updateOne({_id:details.orderId},{$set:{status:details.status}}).then((order)=>{
