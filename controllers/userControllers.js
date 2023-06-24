@@ -277,7 +277,7 @@ getcheckout: (req, res) => {
         
         
        
-        res.render('User/checkout', { user, prod, cartprod, coupens, address })
+        res.render('user/checkout', { user, prod, cartprod, coupens, address })
     })
 
 
@@ -323,7 +323,7 @@ deleteOrder: (req, res) => {
  userHelper. DeleteOrders(req.body).then((response)=>{
       res.json(response)
   }).catch(()=>{
-      res.render('User/Page-404')
+      res.render('user/Page-404')
   })
 },
 placeOrder: (req, res) => {
@@ -332,7 +332,7 @@ placeOrder: (req, res) => {
 },
 getaddress: (req, res) => {
   const user = req.session.user
-  res.render('User/addaddress',{user})
+  res.render('user/addaddress',{user})
 },
 postaddress: (req, res) => {
   const address = req.body
@@ -341,7 +341,7 @@ postaddress: (req, res) => {
  userHelper.PostAddress(address, id).then(() => {
       res.redirect('/addaddress')
   }).catch(() => {
-      res.render('User/Page-404')
+      res.render('user/Page-404')
   })
 },
 alladdress:(req,res)=>{

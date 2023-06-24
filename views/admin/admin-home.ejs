@@ -44,12 +44,7 @@
                     <span class="icon icon-sm rounded-circle bg-warning-light"><i
                             class="text-warning material-icons md-qr_code"></i></span>
                     <div class="text">
-                        <% if(prod){%>
-
-                            <h6 class="mb-1 card-title">Products</h6> <span>
-                                <%= prod.length %>
-                            </span>
-                            <%}%>
+                       
                                 <span class="text-sm">
                                     In 3 Categories <br>
                                     .
@@ -133,7 +128,7 @@
                         <input type="date" id="startDate" />
                         <label for="endDate">End Date:</label>
                         <input type="date" id="endDate" />
-                        <button onclick="filterTable()">Filter</button>
+                       
                     </div>
 
                     <table class="table align-middle table-nowrap mb-0" id="salesTable">
@@ -149,29 +144,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% orders.forEach((order, index)=> { %>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <%= index + 1 %>
-                                    </td>
-                                    <td><b>
-                                            <%= order.name %>
-                                        </b></td>
-                                    <td>
-                                        <%= order.date.toLocaleDateString() %>
-                                    </td>
-                                    <td>
-                                        <%= order.totalAmount %>
-                                    </td>
-                                    <td><span>
-                                            <%= order.status %>
-                                        </span></td>
-                                    <td>
-                                        <%= order.payment_option %>
-                                    </td>
-                                </tr>
-                                <% }) %>
+                           
                         </tbody>
                     </table>
                 </div>
